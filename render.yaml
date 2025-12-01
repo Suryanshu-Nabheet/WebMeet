@@ -1,0 +1,41 @@
+# Render.com deployment configuration
+# This file configures deployment for both frontend and backend services
+#
+# IMPORTANT: After deployment, update the environment variables:
+# 1. Set NEXT_PUBLIC_APP_URL to your frontend service URL
+# 2. Set NEXT_PUBLIC_SOCKET_URL to your backend service URL
+# 3. Set NEXT_PUBLIC_APP_URL in backend to match frontend URL
+
+services:
+  # Frontend Service (Next.js)
+  - type: web
+    name: study-room-frontend
+    env: node
+    plan: starter # Free tier
+    region: oregon # Choose your region
+    rootDir: Frontend
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_APP_URL
+        sync: false # e.g. https://WebMeet-frontend.onrender.com
+      - key: NEXT_PUBLIC_SOCKET_URL
+        sync: false # e.g. https://WebMeet-backend.onrender.com
+
+  # Backend Service (Socket.io)
+  - type: web
+    name: study-room-backend
+    env: node
+    plan: starter # Free tier
+    region: oregon # Choose your region (same as frontend recommended)
+    rootDir: Backend
+    buildCommand: npm install
+    startCommand: npm run server
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_APP_URL
+        sync: false # e.g. https://WebMeet-frontend.onrender.com
