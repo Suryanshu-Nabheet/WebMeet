@@ -439,7 +439,7 @@ export default function RoomPage() {
   }
 
   return (
-    <div className="h-screen bg-gradient-to-br from-black via-zinc-950 to-black flex flex-col overflow-hidden pb-12">
+    <div className="h-screen bg-gradient-to-br from-black via-zinc-950 to-black flex flex-col overflow-hidden">
       {/* Header - Refined and compact */}
       <div className="bg-black border-b border-zinc-800/50 px-3 sm:px-5 lg:px-6 py-2.5 sm:py-3 flex-shrink-0 shadow-xl shadow-black/20">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-3">

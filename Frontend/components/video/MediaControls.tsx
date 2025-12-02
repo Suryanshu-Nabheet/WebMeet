@@ -81,7 +81,7 @@ const MediaControls = memo(function MediaControls({
   };
 
   return (
-    <div className="fixed bottom-0 inset-x-0 z-50 bg-zinc-900/98 backdrop-blur-xl border-t border-zinc-800/30">
+    <div className="w-full z-50 bg-zinc-900/98 backdrop-blur-xl border-t border-zinc-800/30 flex-shrink-0">
       <div className="flex items-center justify-center gap-0.5 px-4 py-2.5">
         {/* Left Controls */}
         <div className="flex items-center gap-0.5">
