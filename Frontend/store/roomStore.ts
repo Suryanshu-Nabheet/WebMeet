@@ -64,8 +64,6 @@ interface RoomState {
   isMeetingLocked: boolean;
   waitingParticipants: WaitingParticipant[];
   isScreenShareActive: boolean;
-  isIDEOpen: boolean;
-  ideCode: string;
   activeScreenSharingId: string | null;
   setRoomId: (id: string) => void;
   setMeetingTitle: (title: string) => void;
@@ -94,8 +92,6 @@ interface RoomState {
   addWaitingParticipant: (participant: WaitingParticipant) => void;
   removeWaitingParticipant: (userId: string) => void;
   setIsScreenShareActive: (active: boolean) => void;
-  setIsIDEOpen: (isOpen: boolean) => void;
-  setIDECode: (code: string) => void;
   setActiveScreenSharingId: (id: string | null) => void;
   clearChat: () => void;
 }
@@ -130,8 +126,6 @@ export const useRoomStore = create<RoomState>((set) => ({
   isMeetingLocked: false,
   waitingParticipants: [],
   isScreenShareActive: false,
-  isIDEOpen: false,
-  ideCode: "// Start coding here...",
   activeScreenSharingId: null,
   setRoomId: (id) => set({ roomId: id }),
   setMeetingTitle: (title) => set({ meetingTitle: title }),
@@ -187,8 +181,6 @@ export const useRoomStore = create<RoomState>((set) => ({
       waitingParticipants: state.waitingParticipants.filter(p => p.userId !== userId),
     })),
   setIsScreenShareActive: (active) => set({ isScreenShareActive: active }),
-  setIsIDEOpen: (isOpen) => set({ isIDEOpen: isOpen }),
-  setIDECode: (code) => set({ ideCode: code }),
   setActiveScreenSharingId: (id) => set({ activeScreenSharingId: id }),
   clearChat: () => set({ chatMessages: [] }),
 }));

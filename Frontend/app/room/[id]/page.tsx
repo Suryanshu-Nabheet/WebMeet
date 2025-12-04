@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import VideoGrid from "@/components/video/VideoGrid";
-import CollaborativeIDE from "@/components/ide/CollaborativeIDE";
 import MediaControls from "@/components/video/MediaControls";
 import Sidebar from "@/components/layout/Sidebar";
 import MeetingEnded from "@/components/ui/MeetingEnded";
@@ -42,7 +41,6 @@ export default function RoomPage() {
     setIsVideoEnabled,
     setIsScreenSharing,
     setMediaError,
-    isIDEOpen,
     activeScreenSharingId,
     setActiveScreenSharingId,
   } = useRoomStore();
@@ -571,9 +569,8 @@ export default function RoomPage() {
       {/* Main Content */}
       {!isLoading && (
         <div className="flex-1 flex flex-col lg:flex-row overflow-hidden animate-in fade-in duration-500">
-          {/* Main Stage (IDE or Screen Share) */}
-          {(isIDEOpen ||
-            activeScreenSharingId ||
+          {/* Main Stage (Screen Share) */}
+          {(activeScreenSharingId ||
             (localStream && useRoomStore.getState().isScreenSharing)) && (
             <div
               className={`
@@ -581,28 +578,24 @@ export default function RoomPage() {
               w-full border-r border-zinc-800/50 flex flex-col transition-all duration-300 rounded-tl-2xl overflow-hidden
             `}
             >
-              {isIDEOpen ? (
-                <CollaborativeIDE />
-              ) : (
-                // Screen Share View
-                <div className="w-full h-full bg-black flex items-center justify-center p-4">
-                  <VideoGrid
-                    peers={peers}
-                    localStream={localStream}
-                    previewStream={previewStream}
-                    mySocketId={mySocketId}
-                    participants={participants}
-                    userName={userName}
-                    isMainStage={true}
-                    mainStageId={
-                      activeScreenSharingId ||
-                      (useRoomStore.getState().isScreenSharing
-                        ? mySocketId
-                        : null)
-                    }
-                  />
-                </div>
-              )}
+              {/* Screen Share View */}
+              <div className="w-full h-full bg-black flex items-center justify-center p-4">
+                <VideoGrid
+                  peers={peers}
+                  localStream={localStream}
+                  previewStream={previewStream}
+                  mySocketId={mySocketId}
+                  participants={participants}
+                  userName={userName}
+                  isMainStage={true}
+                  mainStageId={
+                    activeScreenSharingId ||
+                    (useRoomStore.getState().isScreenSharing
+                      ? mySocketId
+                      : null)
+                  }
+                />
+              </div>
             </div>
           )}
 
@@ -611,9 +604,7 @@ export default function RoomPage() {
             className={`
               w-full bg-gradient-to-br from-zinc-950 to-black p-2 sm:p-3 overflow-hidden transition-all duration-300 rounded-tl-2xl
               ${
-                isIDEOpen ||
-                activeScreenSharingId ||
-                useRoomStore.getState().isScreenSharing
+                activeScreenSharingId || useRoomStore.getState().isScreenSharing
                   ? sidebarVisible
                     ? "lg:w-[25%] border-l border-zinc-800/50"
                     : "lg:w-[30%] border-l border-zinc-800/50"
@@ -631,18 +622,10 @@ export default function RoomPage() {
               participants={participants}
               userName={userName}
               isStrip={
-                isIDEOpen ||
                 !!activeScreenSharingId ||
                 useRoomStore.getState().isScreenSharing
               }
-              excludeId={
-                isIDEOpen
-                  ? null
-                  : activeScreenSharingId ||
-                    (useRoomStore.getState().isScreenSharing
-                      ? mySocketId
-                      : null)
-              }
+              excludeId={null}
             />
           </div>
 

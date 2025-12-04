@@ -203,6 +203,31 @@ export const initWebRTC = async (
         iceCandidatePoolSize: 10, // Pre-gather ICE candidates
         iceTransportPolicy: "all", // Use both relay and non-relay candidates
       },
+      sdpTransform: (sdp: any) => {
+        let newSdp = sdp;
+        // Improve Audio: Enable stereo, FEC, and set high bitrate for Opus (128kbps)
+        try {
+          const opusMatch = newSdp.match(/a=rtpmap:(\d+) opus\/48000\/2/);
+          if (opusMatch) {
+            const payload = opusMatch[1];
+            const fmtpRegex = new RegExp(`a=fmtp:${payload} (.*)`);
+            const fmtpMatch = newSdp.match(fmtpRegex);
+            if (fmtpMatch) {
+              const existingParams = fmtpMatch[1];
+              // Add stereo and high bitrate parameters if not present
+              if (!existingParams.includes("stereo=1")) {
+                newSdp = newSdp.replace(
+                  fmtpRegex, 
+                  `a=fmtp:${payload} ${existingParams};stereo=1;sprop-stereo=1;maxaveragebitrate=128000;useinbandfec=1`
+                );
+              }
+            }
+          }
+        } catch (e) {
+          console.warn("Failed to transform SDP for audio quality:", e);
+        }
+        return newSdp;
+      },
     });
 
     peer.on("signal", (signal) => {

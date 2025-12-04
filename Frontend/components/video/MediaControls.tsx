@@ -7,7 +7,6 @@ import {
   toggleAudio,
   toggleScreenShare,
   toggleVideo,
-  toggleIDE,
 } from "@/lib/mediaControls";
 
 interface MediaControlsProps {
@@ -24,7 +23,6 @@ const MediaControls = memo(function MediaControls({
     setSidebarTab,
     setSidebarVisible,
     sidebarVisible,
-    isIDEOpen,
   } = useRoomStore();
 
   const controls = [
@@ -49,13 +47,6 @@ const MediaControls = memo(function MediaControls({
       icon: isScreenSharing ? "monitor-stop" : "monitor",
       onClick: toggleScreenShare,
       highlight: true,
-    },
-    {
-      id: "ide",
-      active: isIDEOpen,
-      label: "IDE",
-      icon: "code",
-      onClick: toggleIDE,
     },
   ];
 

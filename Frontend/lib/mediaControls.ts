@@ -218,9 +218,4 @@ export const toggleScreenShare = async () => {
 };
 
 
-export const toggleIDE = () => {
-  const { isIDEOpen, setIsIDEOpen } = useRoomStore.getState();
-  const nextState = !isIDEOpen;
-  setIsIDEOpen(nextState);
-  toast.info(nextState ? "IDE opened" : "IDE closed", 2000);
-};
+
