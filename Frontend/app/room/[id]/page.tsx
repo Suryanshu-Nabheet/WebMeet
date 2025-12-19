@@ -283,16 +283,16 @@ export default function RoomPage() {
         // Try 1080p first, fallback to 720p for mobile or low-end devices
         const videoConstraints = isMobile
           ? {
-              width: { ideal: 1280, min: 640, max: 1920 },
-              height: { ideal: 720, min: 480, max: 1080 },
+              width: { ideal: 640, min: 480, max: 1280 },
+              height: { ideal: 480, min: 360, max: 720 },
               facingMode: "user",
-              frameRate: { ideal: 30, max: 30 },
+              frameRate: { ideal: 24, max: 30 },
             }
           : {
-              width: { ideal: 1920, min: 1280, max: 1920 },
-              height: { ideal: 1080, min: 720, max: 1080 },
+              width: { ideal: 1280, min: 640, max: 1280 },
+              height: { ideal: 720, min: 480, max: 720 },
               facingMode: "user",
-              frameRate: { ideal: 30, max: 60 },
+              frameRate: { ideal: 24, max: 30 },
             };
 
         // High-quality audio constraints with all enhancements

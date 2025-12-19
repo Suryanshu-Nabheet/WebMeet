@@ -81,7 +81,7 @@ export const startScreenShare = async () => {
       video: {
         width: { ideal: 1920 },
         height: { ideal: 1080 },
-        frameRate: { ideal: 60, max: 60 },
+        frameRate: { ideal: 10, max: 15 },
       },
       audio: false,
     });
@@ -111,7 +111,10 @@ export const startScreenShare = async () => {
     localStream.removeTrack(cameraTrack);
     localStream.addTrack(screenTrack);
     setPreviewStream(
-      new MediaStream([...screenStream.getVideoTracks(), ...localStream.getAudioTracks()])
+      new MediaStream([
+        ...screenStream.getVideoTracks(),
+        ...localStream.getAudioTracks(),
+      ])
     );
     setScreenStream(screenStream);
     setIsScreenSharing(true);
@@ -124,7 +127,7 @@ export const startScreenShare = async () => {
     screenTrack.onended = () => {
       stopScreenShare();
     };
-    
+
     // Notify others
     const { getSocket } = await import("@/lib/socket");
     const socket = getSocket();
@@ -132,13 +135,17 @@ export const startScreenShare = async () => {
     if (roomId) {
       socket.emit("screen-share-status", { isSharing: true, roomId });
     }
-    
+
     toast.info("Screen sharing started");
   } catch (error) {
     // Silently handle user cancellation - don't show error toast
     if (error instanceof Error) {
       // User cancelled the screen share dialog
-      if (error.name === "NotAllowedError" || error.name === "AbortError" || error.message.includes("denied")) {
+      if (
+        error.name === "NotAllowedError" ||
+        error.name === "AbortError" ||
+        error.message.includes("denied")
+      ) {
         console.log("Screen share cancelled by user");
         return;
       }
@@ -195,7 +202,7 @@ export const stopScreenShare = () => {
   setIsScreenSharing(false);
   setScreenStream(null);
   setIsScreenSharing(false);
-  
+
   // Notify others
   import("@/lib/socket").then(({ getSocket }) => {
     const socket = getSocket();
@@ -216,6 +223,3 @@ export const toggleScreenShare = async () => {
     await startScreenShare();
   }
 };
-
-
-
